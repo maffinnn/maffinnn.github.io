@@ -1,0 +1,1033 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>maffinnn // Space</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Noto+Serif+SC:wght@300;500;700&display=swap');
+
+        :root {
+            --bg-color: #ffffff;
+            --text-primary: #000000;
+            --text-secondary: #666666;
+            --accent-color: #000000;
+            --hover-bg: rgba(0, 0, 0, 0.04);
+            --border-color: rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            line-height: 1.8;
+            overflow-x: hidden;
+            selection-background-color: #000;
+            selection-color: #fff;
+        }
+
+        /* --- Progress Bar --- */
+        #progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 2px;
+            background: #000;
+            width: 0%;
+            z-index: 1001;
+            transition: width 0.1s;
+        }
+
+        /* --- Navigation --- */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 25px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            background: rgba(255, 255, 255, 0.98);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .nav-logo {
+            font-family: 'Playfair Display', serif;
+            font-weight: 800;
+            font-size: 1.5rem;
+            cursor: pointer;
+            letter-spacing: -0.5px;
+            color: #000;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 40px;
+        }
+
+        .nav-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            transition: all 0.3s;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: #000;
+            font-weight: 600;
+        }
+
+        .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: #000;
+        }
+
+        /* --- Layout --- */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 120px 40px 60px;
+            min-height: 100vh;
+        }
+
+        .container-wide {
+            max-width: 100%;
+            padding: 120px 0 60px;
+            overflow: hidden;
+        }
+
+        .page-section {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.6s ease;
+        }
+
+        .page-section.active {
+            display: block;
+            opacity: 1;
+            animation: fadeIn 0.8s forwards;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* --- Home & Lists --- */
+        header {
+            margin-bottom: 80px;
+            margin-top: 60px;
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 4.5rem;
+            font-weight: 600;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            color: #000;
+        }
+
+        .subtitle {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            font-weight: 400;
+            letter-spacing: 0.05em;
+            border-left: 2px solid #000;
+            padding-left: 15px;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            border-bottom: 2px solid #000;
+            padding-bottom: 15px;
+            margin-bottom: 40px;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+        }
+
+        .article-item {
+            display: grid;
+            grid-template-columns: 120px 1fr;
+            gap: 30px;
+            padding: 30px 0;
+            border-bottom: 1px solid var(--border-color);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .article-item::before {
+            content: '';
+            position: absolute;
+            left: -15px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 2px;
+            height: 0;
+            background: #000;
+            transition: height 0.3s ease;
+        }
+
+        .article-item:hover::before {
+            height: 100%;
+        }
+
+        .article-item:hover {
+            transform: translateX(10px);
+            background: var(--hover-bg);
+            padding-left: 10px;
+        }
+
+        .article-item:hover h3 {
+            text-decoration: underline;
+            text-decoration-thickness: 1px;
+            text-underline-offset: 4px;
+        }
+
+        .article-date {
+            font-size: 0.8rem;
+            color: #999;
+            font-weight: 600;
+            letter-spacing: 1px;
+            margin-top: 5px;
+        }
+
+        .article-content h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.6rem;
+            margin-bottom: 10px;
+            color: #000;
+        }
+
+        .article-content p {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* --- Post View --- */
+        .post-header {
+            margin-bottom: 60px;
+            text-align: center;
+        }
+
+        .post-meta {
+            font-size: 0.85rem;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .post-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            line-height: 1.2;
+            margin-bottom: 30px;
+        }
+
+        .back-btn {
+            display: inline-block;
+            margin-bottom: 40px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            border-bottom: 1px solid transparent;
+            color: #000;
+        }
+
+        .back-btn:hover {
+            border-bottom: 1px solid #000;
+        }
+
+        .post-body {
+            max-width: 680px;
+            margin: 0 auto;
+            font-size: 1.1rem;
+            color: #111;
+        }
+
+        .post-body p {
+            margin-bottom: 25px;
+            text-align: justify;
+        }
+
+        .post-body h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            margin: 50px 0 20px 0;
+            color: #000;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+        }
+
+        .post-body blockquote {
+            border-left: 4px solid #000;
+            padding-left: 20px;
+            margin: 40px 0;
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: 1.4rem;
+            color: #444;
+            background: #fcfcfc;
+            padding: 20px;
+        }
+
+        .post-body img {
+            max-width: 100%;
+            height: auto;
+            border: 1px solid #eee;
+            display: block;
+            margin: 30px auto;
+        }
+
+        /* --- Comments (Giscus) --- */
+        .giscus {
+            margin-top: 80px;
+            padding-top: 40px;
+            border-top: 1px solid #eee;
+            max-width: 680px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* --- Gallery --- */
+        .gallery-marquee-container {
+            width: 100%;
+            overflow: hidden;
+            position: relative;
+            padding: 40px 0;
+            mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+            -webkit-mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+        }
+
+        .gallery-track {
+            display: flex;
+            gap: 60px;
+            width: max-content;
+            animation: scroll 40s linear infinite;
+        }
+
+        .gallery-track:hover {
+            animation-play-state: paused;
+        }
+
+        @keyframes scroll {
+            0% {
+                transform: translateX(0);
+            }
+
+            100% {
+                transform: translateX(-50%);
+            }
+        }
+
+        .gallery-card {
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+            width: 350px;
+            flex-shrink: 0;
+            transition: transform 0.3s ease;
+        }
+
+        .gallery-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .gallery-card-img {
+            width: 100%;
+            aspect-ratio: 3/4;
+            background-color: #f5f5f5;
+            border: 1px solid #eee;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .gallery-card-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+            filter: grayscale(100%);
+        }
+
+        .gallery-card:hover img {
+            transform: scale(1.05);
+            filter: grayscale(0%);
+        }
+
+        .gallery-card-info h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem;
+            color: #000;
+            margin-bottom: 5px;
+        }
+
+        .gallery-card-info p {
+            font-size: 0.8rem;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .placeholder-text {
+            color: #ccc;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* --- Write / Code Gen Section --- */
+        .write-fab {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: #000;
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            z-index: 999;
+            transition: transform 0.3s;
+        }
+
+        .write-fab:hover {
+            transform: scale(1.1);
+        }
+
+        .editor-container {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .editor-input,
+        .editor-select {
+            width: 100%;
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            font-family: 'Inter', sans-serif;
+            background: #fff;
+            border-radius: 0;
+        }
+
+        .editor-select {
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+            background-size: 16px;
+            padding-right: 45px;
+            cursor: pointer;
+        }
+
+        .editor-textarea {
+            min-height: 300px;
+            resize: vertical;
+        }
+
+        .editor-label {
+            display: block;
+            font-size: 0.8rem;
+            color: #666;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .code-output {
+            background: #f4f4f4;
+            padding: 20px;
+            border: 1px solid #ddd;
+            font-family: monospace;
+            font-size: 0.85rem;
+            white-space: pre-wrap;
+            word-break: break-all;
+            margin-top: 20px;
+            display: none;
+        }
+
+        /* --- About --- */
+        .about-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 60px;
+            align-items: start;
+        }
+
+        .about-intro p {
+            margin-bottom: 20px;
+            color: #333;
+            font-size: 1.05rem;
+        }
+
+        .sidebar-section {
+            margin-bottom: 40px;
+        }
+
+        .section-label {
+            font-family: 'Playfair Display', serif;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+            border-bottom: 2px solid #000;
+            padding-bottom: 10px;
+            color: #000;
+        }
+
+        .resume-btn {
+            display: block;
+            text-align: center;
+            width: 100%;
+            margin-top: 20px;
+            padding: 14px 0;
+            background-color: #000;
+            color: #fff;
+            text-decoration: none;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: 1px solid #000;
+        }
+
+        .resume-btn:hover {
+            background-color: #fff;
+            color: #000;
+        }
+
+        .social-links {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .social-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 5px;
+        }
+
+        .social-link:hover {
+            color: #000;
+            border-bottom-color: #000;
+            padding-left: 5px;
+        }
+
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .tech-tag {
+            font-size: 0.75rem;
+            padding: 4px 10px;
+            border: 1px solid #ccc;
+            color: #555;
+            border-radius: 0;
+            transition: all 0.3s;
+        }
+
+        .tech-tag:hover {
+            border-color: #000;
+            color: #000;
+            background: #f5f5f5;
+        }
+
+        footer {
+            margin-top: 100px;
+            padding-top: 40px;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            color: #888;
+        }
+
+        .menu-toggle {
+            display: none;
+            cursor: pointer;
+            font-size: 1.5rem;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 3rem;
+            }
+
+            .about-grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            .nav-links {
+                position: fixed;
+                top: 80px;
+                left: 0;
+                width: 100%;
+                flex-direction: column;
+                background: #fff;
+                padding: 20px;
+                border-bottom: 1px solid #eee;
+                gap: 20px;
+                text-align: center;
+                display: none;
+            }
+
+            .nav-links.mobile-open {
+                display: flex;
+            }
+
+            .menu-toggle {
+                display: block;
+            }
+
+            .gallery-track {
+                gap: 30px;
+            }
+
+            .gallery-card {
+                width: 280px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="progress-bar"></div>
+
+    <nav>
+        <div class="nav-logo" onclick="window.app.router('home')">maffinnn</div>
+        <div class="menu-toggle" onclick="window.app.toggleMenu()">?</div>
+        <div class="nav-links" id="nav-links">
+            <a class="nav-link active" onclick="window.app.router('home')">Essays & Notes</a>
+            <a class="nav-link" onclick="window.app.router('gallery')">Gallery</a>
+            <a class="nav-link" onclick="window.app.router('about')">About</a>
+        </div>
+    </nav>
+
+    <div id="main-container" class="container">
+        <!-- === HOME === -->
+        <div id="page-home" class="page-section active">
+            <header>
+                <h1>Code &<br><i>Canvas.</i></h1>
+                <div class="subtitle">maffinnn / Builder and Artist</div>
+            </header>
+            <div class="section-header">
+                <h2 class="section-title">Selected Writing</h2>
+                <span style="font-size: 0.8rem; color: #666; letter-spacing: 1px;">ESSAYS & NOTES</span>
+            </div>
+            <div class="article-list" id="article-list-container"></div>
+        </div>
+
+        <!-- === POST DETAIL (With Giscus) === -->
+        <div id="page-post" class="page-section">
+            <div class="back-btn" onclick="window.app.router('home')">¡û Back to Index</div>
+            <div id="post-content-wrapper"></div>
+
+            <!-- Giscus Comments Container -->
+            <div class="giscus"></div>
+        </div>
+
+        <!-- === WRITE / GEN CODE === -->
+        <div id="page-write" class="page-section">
+            <div class="back-btn" onclick="window.app.router('home')">¡û Cancel</div>
+            <header>
+                <h1>New<br><i>Entry.</i></h1>
+            </header>
+            <div class="editor-container">
+                <p style="margin-bottom:20px; color:#666; font-size:0.9rem;">
+                    Use this tool to generate the code for a new post. Copy the result and paste it into the
+                    <strong>BLOG_DATA</strong> or <strong>GALLERY_DATA</strong> array in your <code>index.html</code>
+                    file.
+                </p>
+                <label class="editor-label">Content Type</label>
+                <select id="write-type" class="editor-select" onchange="window.app.toggleEditorFields()">
+                    <option value="post">Essay / Note</option>
+                    <option value="art">Art Piece (Gallery)</option>
+                </select>
+
+                <label class="editor-label">Title</label>
+                <input type="text" id="write-title" class="editor-input" placeholder="Title">
+
+                <div id="field-summary">
+                    <label class="editor-label">Summary</label>
+                    <input type="text" id="write-summary" class="editor-input" placeholder="A brief subtitle">
+                </div>
+
+                <div id="field-art" class="hidden">
+                    <label class="editor-label">Medium</label>
+                    <input type="text" id="write-medium" class="editor-input" placeholder="e.g., Charcoal, Digital">
+                    <label class="editor-label">Image URL</label>
+                    <input type="text" id="write-image-url" class="editor-input"
+                        placeholder="https://your-image-host.com/art.jpg">
+                </div>
+
+                <label class="editor-label">Content / Description (HTML Allowed)</label>
+                <textarea id="write-content" class="editor-input editor-textarea"
+                    placeholder="Write here..."></textarea>
+
+                <button class="resume-btn" onclick="window.app.generateCode()">Generate Code</button>
+
+                <div id="code-output" class="code-output"></div>
+            </div>
+        </div>
+
+        <!-- === ABOUT === -->
+        <div id="page-about" class="page-section">
+            <header>
+                <h1>maffinnn.</h1>
+            </header>
+            <div class="about-grid">
+                <div class="about-main">
+                    <div class="about-intro">
+                        <p style="font-size: 1.2rem; font-weight: 600; margin-bottom: 30px; line-height: 1.5;">"Code
+                            builds the structure; Art gives it soul. I am dedicated to crafting both with precision and
+                            heart."</p>
+                        <p>I am a Full-Stack Software Engineer and an artist at heart. My journey has always been driven
+                            by a dual passion: the rigorous logic required to build scalable systems, and the intuitive
+                            freedom found in visual expression.</p>
+                        <p>Professionally, I thrive on solving complex problems. I am currently building core
+                            infrastructure at a <strong>Tech Company</strong>. My path has also led me through
+                            high-velocity environments at other <strong>Tech Companies</strong>, where I learned the art
+                            of cloud engineering and distributed systems.</p>
+                        <p>Beyond the terminal, I find my balance in creativity. Whether it's <strong>traditional
+                                sketching</strong> on paper or exploring <strong>modern digital arts</strong>, drawing
+                            allows me to see the world through a different lens.</p>
+                    </div>
+                </div>
+                <div class="about-sidebar">
+                    <div class="sidebar-section">
+                        <div class="section-label">Skill Tree</div>
+                        <div class="tech-stack">
+                            <span class="tech-tag">Golang</span>
+                            <span class="tech-tag">React</span>
+                            <span class="tech-tag">AWS</span>
+                            <span class="tech-tag">Kubernetes</span>
+                        </div>
+                    </div>
+                    <div class="sidebar-section">
+                        <div class="section-label">Connect</div>
+                        <div class="social-links">
+                            <a href="mailto:biansiyuanlynn@gmail.com" class="social-link">Email <span>¡ú</span></a>
+                            <a href="https://github.com/maffinnn" target="_blank" class="social-link">GitHub
+                                <span>¡ú</span></a>
+                            <a href="https://www.linkedin.com/in/siyuan-bian-13ba6b134/" target="_blank"
+                                class="social-link">LinkedIn <span>¡ú</span></a>
+                        </div>
+                        <a href="./resume.pdf" class="resume-btn" target="_blank">Download Resume</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <div>? 2025 maffinnn</div>
+            <div>Designed with Intelligence</div>
+        </footer>
+    </div>
+
+    <!-- === GALLERY (Wide Layout) === -->
+    <div id="page-gallery" class="page-section container-wide">
+        <div class="container">
+            <header>
+                <h1>Visual<br><i>Experiments.</i></h1>
+            </header>
+        </div>
+        <div class="gallery-marquee-container">
+            <div class="gallery-track" id="gallery-track"></div>
+        </div>
+    </div>
+
+    <div class="write-fab" onclick="window.app.router('write')" title="New Entry">+</div>
+
+    <script>
+        // ==========================================================================
+        // ? DATA STORAGE (GitHub Mode - Manual Code Entry)
+        // ==========================================================================
+
+        // 1. ESSAYS & NOTES DATA
+        const BLOG_DATA = [
+            {
+                id: 1,
+                date: "OCT 27, 2023",
+                title: "Metaphors of Algorithms",
+                summary: "Exploring recursive structures in nature, and how code mimics organic life.",
+                content: `<p>When we look at a fern unfolding or a river branching, we are seeing recursion in physical form. Nature is the original programmer...</p>`
+            },
+            {
+                id: 2,
+                date: "OCT 15, 2023",
+                title: "Digital Minimalism",
+                summary: "Architecting tranquil user experiences in an age of information overload.",
+                content: `<p>The default state of the modern web is noise. As engineers, we have a moral obligation to reduce entropy.</p>`
+            },
+            {
+                id: 3,
+                date: "SEP 02, 2023",
+                title: "System Aesthetics",
+                summary: "Entropy and order in complex systems.",
+                content: `<p>There is a profound beauty in a well-designed distributed system. The way nodes communicate is a ballet of logic.</p>`
+            }
+        ];
+
+        // 2. GALLERY DATA
+        const GALLERY_DATA = [
+            {
+                id: "art-1",
+                title: "Structural Chaos",
+                medium: "Charcoal on Paper",
+                description: "A study of urban decay.",
+                imageUrl: "https://images.unsplash.com/photo-1515405295579-ba7f9f92f413?q=80&w=800&auto=format&fit=crop" // Placeholder
+            },
+            {
+                id: "art-2",
+                title: "Neural Dreams",
+                medium: "Generative Art",
+                description: "Algorithmic patterns generated with p5.js",
+                imageUrl: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=800&auto=format&fit=crop" // Placeholder
+            },
+            {
+                id: "art-3",
+                title: "Silence",
+                medium: "Ink",
+                description: "Minimalist ink wash painting.",
+                imageUrl: "https://images.unsplash.com/photo-1580136608260-4eb11f4b64fe?q=80&w=800&auto=format&fit=crop" // Placeholder
+            },
+            {
+                id: "art-4",
+                title: "Recursion",
+                medium: "3D Render",
+                description: "Blender fractal loops.",
+                imageUrl: "https://images.unsplash.com/photo-1614730341194-75c60740658f?q=80&w=800&auto=format&fit=crop" // Placeholder
+            }
+        ];
+
+        // 3. APP LOGIC
+        window.app = {
+            init: function () {
+                this.renderHome();
+                this.renderGallery();
+                this.initGiscus(); // Load comments
+            },
+
+            router: function (pageId) {
+                document.querySelectorAll('.page-section').forEach(el => el.classList.remove('active'));
+
+                if (pageId === 'gallery') {
+                    document.getElementById('main-container').style.display = 'none';
+                    document.getElementById('page-gallery').classList.add('active');
+                } else {
+                    document.getElementById('main-container').style.display = 'block';
+                    document.getElementById('page-gallery').classList.remove('active');
+                    document.getElementById('page-' + pageId).classList.add('active');
+                }
+
+                document.querySelectorAll('.nav-link').forEach(el => el.classList.remove('active'));
+                if (pageId === 'home' || pageId === 'post') document.querySelectorAll('.nav-link')[0].classList.add('active');
+                if (pageId === 'gallery') document.querySelectorAll('.nav-link')[1].classList.add('active');
+                if (pageId === 'about') document.querySelectorAll('.nav-link')[2].classList.add('active');
+
+                document.getElementById('nav-links').classList.remove('mobile-open');
+                window.scrollTo(0, 0);
+            },
+
+            toggleMenu: function () { document.getElementById('nav-links').classList.toggle('mobile-open'); },
+
+            toggleEditorFields: function () {
+                const type = document.getElementById('write-type').value;
+                if (type === 'post') {
+                    document.getElementById('field-summary').classList.remove('hidden');
+                    document.getElementById('field-art').classList.add('hidden');
+                } else {
+                    document.getElementById('field-summary').classList.add('hidden');
+                    document.getElementById('field-art').classList.remove('hidden');
+                }
+            },
+
+            generateCode: function () {
+                const type = document.getElementById('write-type').value;
+                const title = document.getElementById('write-title').value;
+                const content = document.getElementById('write-content').value;
+                const now = new Date();
+                const dateStr = now.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).toUpperCase();
+
+                let code = "";
+                if (type === 'post') {
+                    const summary = document.getElementById('write-summary').value;
+                    code = `
+    {
+        id: ${Date.now()},
+        date: "${dateStr}",
+        title: "${title}",
+        summary: "${summary}",
+        content: \`${content}\`
+    },`;
+                } else {
+                    const medium = document.getElementById('write-medium').value;
+                    const imageUrl = document.getElementById('write-image-url').value;
+                    code = `
+    {
+        id: "${Date.now()}",
+        title: "${title}",
+        medium: "${medium}",
+        description: "${content}",
+        imageUrl: "${imageUrl}"
+    },`;
+                }
+
+                const output = document.getElementById('code-output');
+                output.style.display = "block";
+                output.innerText = "1. Copy this code:\n" + code + "\n\n2. Open index.html\n3. Paste it into the " + (type === 'post' ? 'BLOG_DATA' : 'GALLERY_DATA') + " array.";
+            },
+
+            openPost: function (id, title, contentEncoded, date) {
+                const content = decodeURIComponent(contentEncoded);
+                document.getElementById('post-content-wrapper').innerHTML = `
+                    <div class="post-header"><span class="post-meta">${date} ? Note</span><h1 class="post-title">${title}</h1></div>
+                    <div class="post-body">${content}</div>`;
+                window.app.router('post');
+                this.reloadGiscus(id);
+            },
+
+            openArt: function (id, title, medium, descEncoded, urlEncoded) {
+                const desc = decodeURIComponent(descEncoded);
+                const url = decodeURIComponent(urlEncoded);
+                document.getElementById('post-content-wrapper').innerHTML = `
+                    <div class="post-header"><span class="post-meta">${medium} ? Gallery</span><h1 class="post-title">${title}</h1></div>
+                    <div class="post-body" style="text-align:center;">
+                        <img src="${url}" style="max-width:100%; margin-bottom:30px; border:1px solid #eee;">
+                        <p>${desc}</p>
+                    </div>`;
+                window.app.router('post');
+                this.reloadGiscus(id);
+            },
+
+            renderHome: function () {
+                const container = document.getElementById('article-list-container');
+                container.innerHTML = BLOG_DATA.map(post => `
+                    <div class="article-item" onclick="window.app.openPost('${post.id}', '${post.title}', '${encodeURIComponent(post.content)}', '${post.date}')">
+                        <div class="article-date">${post.date}</div>
+                        <div class="article-content"><h3>${post.title}</h3><p>${post.summary}</p></div>
+                    </div>
+                `).join('');
+            },
+
+            renderGallery: function () {
+                const track = document.getElementById('gallery-track');
+                const createCard = (item) => `
+                    <div class="gallery-card" onclick="window.app.openArt('${item.id}', '${item.title}', '${item.medium}', '${encodeURIComponent(item.description)}', '${encodeURIComponent(item.imageUrl)}')">
+                        <div class="gallery-card-img"><img src="${item.imageUrl}" alt="${item.title}"></div>
+                        <div class="gallery-card-info"><h3>${item.title}</h3><p>${item.medium}</p></div>
+                    </div>`;
+
+                // Infinite scroll: Duplicate items
+                let html = GALLERY_DATA.map(createCard).join('');
+                html += GALLERY_DATA.map(createCard).join('');
+                if (GALLERY_DATA.length < 5) html += GALLERY_DATA.map(createCard).join('');
+                track.innerHTML = html;
+            },
+
+            // --- GISCUS COMMENTS ---
+            initGiscus: function () {
+                const script = document.createElement('script');
+                script.src = "https://giscus.app/client.js";
+                // ??? IMPORTANT: YOU MUST UPDATE THIS ???
+                // Go to giscus.app, generate your config, and replace these values
+                script.setAttribute("data-repo", "maffinnn/maffinnn.github.io");
+                script.setAttribute("data-repo-id", "R_kgDOMl..."); // REPLACE THIS
+                script.setAttribute("data-category", "Announcements");
+                script.setAttribute("data-category-id", "DIC_kwDOMl..."); // REPLACE THIS
+                script.setAttribute("data-mapping", "specific");
+                script.setAttribute("data-term", "Welcome"); // Default term
+                script.setAttribute("data-strict", "0");
+                script.setAttribute("data-reactions-enabled", "1");
+                script.setAttribute("data-emit-metadata", "0");
+                script.setAttribute("data-input-position", "bottom");
+                script.setAttribute("data-theme", "light");
+                script.setAttribute("data-lang", "en");
+                script.setAttribute("crossorigin", "anonymous");
+                script.async = true;
+                document.querySelector('.giscus').appendChild(script);
+            },
+
+            reloadGiscus: function (term) {
+                const iframe = document.querySelector('iframe.giscus-frame');
+                if (!iframe) return;
+                iframe.contentWindow.postMessage({
+                    giscus: { setConfig: { term: term } }
+                }, 'https://giscus.app');
+            }
+        };
+
+        window.onscroll = function () {
+            let winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            let height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            let scrolled = (winScroll / height) * 100;
+            document.getElementById("progress-bar").style.width = scrolled + "%";
+        };
+
+        window.app.init();
+    </script>
+</body>
+
+</html>
