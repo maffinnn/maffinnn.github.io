@@ -5,16 +5,34 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>maffinnn // Space</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Noto+Serif+SC:wght@300;500;700&display=swap');
 
+    <!-- Load Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400;1,500&family=JetBrains+Mono:wght@400&display=swap"
+        rel="stylesheet">
+
+    <!-- Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
         :root {
-            --bg-color: #ffffff;
-            --text-primary: #000000;
-            --text-secondary: #666666;
-            --accent-color: #000000;
-            --hover-bg: rgba(0, 0, 0, 0.04);
-            --border-color: rgba(0, 0, 0, 0.1);
+            /* --- Theme Palette --- */
+            --bg-color: #0e0e0e;
+            --text-primary: #e5e5e5;
+            --text-secondary: #888888;
+            --text-muted: #444444;
+
+            --accent-color: #fb923c;
+            /* Orange-400 */
+            --accent-glow: rgba(251, 146, 60, 0.15);
+
+            --border-color: rgba(255, 255, 255, 0.1);
+            --border-hover: rgba(255, 255, 255, 0.3);
+
+            --card-bg: rgba(255, 255, 255, 0.02);
+            --nav-bg: rgba(14, 14, 14, 0.8);
         }
 
         * {
@@ -23,14 +41,54 @@
             box-sizing: border-box;
         }
 
+        ::selection {
+            background: var(--accent-color);
+            color: #fff;
+        }
+
         body {
             background-color: var(--bg-color);
             color: var(--text-primary);
             font-family: 'Inter', sans-serif;
-            line-height: 1.8;
+            line-height: 1.7;
             overflow-x: hidden;
-            selection-background-color: #000;
-            selection-color: #fff;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* --- Ambient Effects --- */
+        .noise-overlay {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.05;
+            mix-blend-mode: overlay;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        .ambient-orb {
+            position: fixed;
+            top: -10%;
+            right: -10%;
+            width: 60vw;
+            height: 60vw;
+            background: radial-gradient(circle, rgba(251, 146, 60, 0.08) 0%, rgba(0, 0, 0, 0) 70%);
+            filter: blur(80px);
+            pointer-events: none;
+            z-index: 0;
+            animation: pulse 10s ease-in-out infinite alternate;
+        }
+
+        @keyframes pulse {
+            0% {
+                opacity: 0.5;
+                transform: scale(1);
+            }
+
+            100% {
+                opacity: 0.8;
+                transform: scale(1.1);
+            }
         }
 
         /* --- Progress Bar --- */
@@ -39,10 +97,11 @@
             top: 0;
             left: 0;
             height: 2px;
-            background: #000;
+            background: var(--accent-color);
             width: 0%;
             z-index: 1001;
             transition: width 0.1s;
+            box-shadow: 0 0 10px var(--accent-color);
         }
 
         /* --- Navigation --- */
@@ -56,17 +115,24 @@
             justify-content: space-between;
             align-items: center;
             z-index: 100;
-            background: rgba(255, 255, 255, 0.98);
+            background: var(--nav-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             border-bottom: 1px solid var(--border-color);
         }
 
         .nav-logo {
             font-family: 'Playfair Display', serif;
-            font-weight: 800;
+            font-weight: 600;
+            font-style: italic;
             font-size: 1.5rem;
             cursor: pointer;
-            letter-spacing: -0.5px;
-            color: #000;
+            color: var(--text-primary);
+            transition: color 0.3s;
+        }
+
+        .nav-logo:hover {
+            color: var(--accent-color);
         }
 
         .nav-links {
@@ -77,10 +143,11 @@
         .nav-link {
             color: var(--text-secondary);
             text-decoration: none;
-            font-size: 0.85rem;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.8rem;
             font-weight: 500;
             text-transform: uppercase;
-            letter-spacing: 1.5px;
+            letter-spacing: 2px;
             transition: all 0.3s;
             cursor: pointer;
             position: relative;
@@ -88,32 +155,36 @@
 
         .nav-link:hover,
         .nav-link.active {
-            color: #000;
-            font-weight: 600;
+            color: var(--text-primary);
         }
 
         .nav-link.active::after {
             content: '';
             position: absolute;
-            bottom: -5px;
+            bottom: -6px;
             left: 0;
             width: 100%;
             height: 1px;
-            background: #000;
+            background: var(--accent-color);
+            box-shadow: 0 0 8px var(--accent-color);
         }
 
         /* --- Layout --- */
         .container {
             max-width: 900px;
             margin: 0 auto;
-            padding: 120px 40px 60px;
+            padding: 140px 40px 80px;
             min-height: 100vh;
+            position: relative;
+            z-index: 1;
         }
 
         .container-wide {
             max-width: 100%;
             padding: 120px 0 60px;
             overflow: hidden;
+            position: relative;
+            z-index: 1;
         }
 
         .page-section {
@@ -125,13 +196,13 @@
         .page-section.active {
             display: block;
             opacity: 1;
-            animation: fadeIn 0.8s forwards;
+            animation: fadeIn 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
         }
 
         @keyframes fadeIn {
             from {
                 opacity: 0;
-                transform: translateY(20px);
+                transform: translateY(30px);
             }
 
             to {
@@ -140,35 +211,43 @@
             }
         }
 
-        /* --- Home & Lists --- */
+        /* --- Headers --- */
         header {
             margin-bottom: 80px;
-            margin-top: 60px;
+            margin-top: 40px;
         }
 
         h1 {
             font-family: 'Playfair Display', serif;
-            font-size: 4.5rem;
-            font-weight: 600;
-            line-height: 1.1;
+            font-size: 5rem;
+            font-weight: 400;
+            font-style: italic;
+            line-height: 1;
             margin-bottom: 20px;
-            color: #000;
+            color: var(--text-primary);
+            letter-spacing: -2px;
+        }
+
+        h1 i {
+            color: var(--accent-color);
         }
 
         .subtitle {
-            font-size: 1rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
             color: var(--text-secondary);
-            font-weight: 400;
-            letter-spacing: 0.05em;
-            border-left: 2px solid #000;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border-left: 1px solid var(--accent-color);
             padding-left: 15px;
+            margin-top: 20px;
         }
 
         .section-header {
             display: flex;
             justify-content: space-between;
             align-items: flex-end;
-            border-bottom: 2px solid #000;
+            border-bottom: 1px solid var(--border-color);
             padding-bottom: 15px;
             margin-bottom: 40px;
         }
@@ -176,66 +255,63 @@
         .section-title {
             font-family: 'Playfair Display', serif;
             font-size: 2rem;
+            font-style: italic;
+            font-weight: 400;
         }
 
+        /* --- Article List --- */
         .article-item {
             display: grid;
             grid-template-columns: 120px 1fr;
             gap: 30px;
-            padding: 30px 0;
+            padding: 40px 0;
             border-bottom: 1px solid var(--border-color);
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
             position: relative;
         }
 
-        .article-item::before {
-            content: '';
-            position: absolute;
-            left: -15px;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 2px;
-            height: 0;
-            background: #000;
-            transition: height 0.3s ease;
-        }
-
-        .article-item:hover::before {
-            height: 100%;
+        .article-item:first-of-type {
+            border-top: 1px solid var(--border-color);
         }
 
         .article-item:hover {
+            border-color: var(--border-hover);
             transform: translateX(10px);
-            background: var(--hover-bg);
-            padding-left: 10px;
-        }
-
-        .article-item:hover h3 {
-            text-decoration: underline;
-            text-decoration-thickness: 1px;
-            text-underline-offset: 4px;
         }
 
         .article-date {
-            font-size: 0.8rem;
-            color: #999;
-            font-weight: 600;
-            letter-spacing: 1px;
-            margin-top: 5px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 8px;
+            transition: color 0.3s;
+        }
+
+        .article-item:hover .article-date {
+            color: var(--accent-color);
         }
 
         .article-content h3 {
             font-family: 'Playfair Display', serif;
-            font-size: 1.6rem;
-            margin-bottom: 10px;
-            color: #000;
+            font-size: 2rem;
+            font-weight: 400;
+            margin-bottom: 12px;
+            color: var(--text-primary);
+            transition: color 0.3s;
+        }
+
+        .article-item:hover .article-content h3 {
+            color: #fff;
+            font-style: italic;
         }
 
         .article-content p {
-            font-size: 0.95rem;
+            font-size: 1rem;
             color: var(--text-secondary);
             line-height: 1.6;
+            font-weight: 300;
+            max-width: 600px;
         }
 
         /* --- Post View --- */
@@ -245,8 +321,9 @@
         }
 
         .post-meta {
-            font-size: 0.85rem;
-            color: #888;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--accent-color);
             text-transform: uppercase;
             letter-spacing: 2px;
             margin-bottom: 20px;
@@ -255,73 +332,85 @@
 
         .post-title {
             font-family: 'Playfair Display', serif;
-            font-size: 3rem;
-            line-height: 1.2;
+            font-size: 3.5rem;
+            font-weight: 400;
+            font-style: italic;
+            line-height: 1.1;
             margin-bottom: 30px;
         }
 
         .back-btn {
-            display: inline-block;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
             margin-bottom: 40px;
-            font-size: 0.8rem;
-            font-weight: 600;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
             text-transform: uppercase;
             letter-spacing: 1px;
             cursor: pointer;
-            border-bottom: 1px solid transparent;
-            color: #000;
+            color: var(--text-secondary);
+            transition: color 0.3s;
         }
 
         .back-btn:hover {
-            border-bottom: 1px solid #000;
+            color: var(--accent-color);
         }
 
         .post-body {
             max-width: 680px;
             margin: 0 auto;
             font-size: 1.1rem;
-            color: #111;
+            color: #d4d4d4;
+            font-weight: 300;
+            line-height: 1.9;
         }
 
         .post-body p {
-            margin-bottom: 25px;
-            text-align: justify;
+            margin-bottom: 30px;
         }
 
         .post-body h2 {
             font-family: 'Playfair Display', serif;
             font-size: 1.8rem;
-            margin: 50px 0 20px 0;
-            color: #000;
-            border-bottom: 1px solid #eee;
-            padding-bottom: 10px;
+            font-style: italic;
+            margin: 60px 0 25px 0;
+            color: #fff;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 15px;
         }
 
         .post-body blockquote {
-            border-left: 4px solid #000;
-            padding-left: 20px;
-            margin: 40px 0;
+            border-left: 2px solid var(--accent-color);
+            padding-left: 30px;
+            margin: 50px 0;
             font-family: 'Playfair Display', serif;
             font-style: italic;
-            font-size: 1.4rem;
-            color: #444;
-            background: #fcfcfc;
-            padding: 20px;
+            font-size: 1.5rem;
+            color: #fff;
+            background: linear-gradient(90deg, var(--card-bg) 0%, transparent 100%);
+            padding: 30px;
         }
 
         .post-body img {
             max-width: 100%;
             height: auto;
-            border: 1px solid #eee;
+            border: 1px solid var(--border-color);
             display: block;
-            margin: 30px auto;
+            margin: 40px auto;
+            filter: grayscale(20%);
+            transition: filter 0.3s;
         }
 
-        /* --- Comments (Giscus) --- */
+        .post-body img:hover {
+            filter: grayscale(0%);
+        }
+
+        /* --- Giscus --- */
         .giscus {
-            margin-top: 80px;
-            padding-top: 40px;
-            border-top: 1px solid #eee;
+            margin-top: 100px;
+            padding-top: 60px;
+            border-top: 1px solid var(--border-color);
             max-width: 680px;
             margin-left: auto;
             margin-right: auto;
@@ -332,16 +421,17 @@
             width: 100%;
             overflow: hidden;
             position: relative;
-            padding: 40px 0;
-            mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
-            -webkit-mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+            padding: 60px 0;
+            /* Fade edges */
+            mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+            -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
         }
 
         .gallery-track {
             display: flex;
             gap: 60px;
             width: max-content;
-            animation: scroll 40s linear infinite;
+            animation: scroll 50s linear infinite;
         }
 
         .gallery-track:hover {
@@ -364,81 +454,77 @@
             cursor: pointer;
             width: 350px;
             flex-shrink: 0;
-            transition: transform 0.3s ease;
+            transition: transform 0.5s ease;
         }
 
         .gallery-card:hover {
-            transform: translateY(-10px);
+            transform: translateY(-15px);
         }
 
         .gallery-card-img {
             width: 100%;
             aspect-ratio: 3/4;
-            background-color: #f5f5f5;
-            border: 1px solid #eee;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            background-color: #1a1a1a;
+            border: 1px solid var(--border-color);
             overflow: hidden;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
+            position: relative;
         }
 
         .gallery-card-img img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: transform 0.5s;
-            filter: grayscale(100%);
+            transition: all 0.7s ease;
+            filter: grayscale(100%) contrast(1.2);
+            opacity: 0.8;
         }
 
         .gallery-card:hover img {
-            transform: scale(1.05);
-            filter: grayscale(0%);
+            transform: scale(1.1);
+            filter: grayscale(0%) contrast(1);
+            opacity: 1;
         }
 
         .gallery-card-info h3 {
             font-family: 'Playfair Display', serif;
-            font-size: 1.4rem;
-            color: #000;
-            margin-bottom: 5px;
+            font-size: 1.5rem;
+            font-style: italic;
+            color: var(--text-primary);
+            margin-bottom: 8px;
         }
 
         .gallery-card-info p {
-            font-size: 0.8rem;
-            color: #888;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--text-secondary);
             text-transform: uppercase;
             letter-spacing: 1px;
         }
 
-        .placeholder-text {
-            color: #ccc;
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        /* --- Write / Code Gen Section --- */
+        /* --- Editor --- */
         .write-fab {
             position: fixed;
-            bottom: 30px;
-            right: 30px;
-            width: 50px;
-            height: 50px;
-            background: #000;
-            color: #fff;
+            bottom: 40px;
+            right: 40px;
+            width: 60px;
+            height: 60px;
+            background: var(--text-primary);
+            color: var(--bg-color);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 24px;
+            font-size: 28px;
             cursor: pointer;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
             z-index: 999;
-            transition: transform 0.3s;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
         .write-fab:hover {
-            transform: scale(1.1);
+            transform: scale(1.1) rotate(90deg);
+            background: var(--accent-color);
         }
 
         .editor-container {
@@ -449,36 +535,43 @@
         .editor-input,
         .editor-select {
             width: 100%;
-            padding: 15px;
-            margin-bottom: 20px;
-            border: 1px solid #ddd;
+            padding: 20px;
+            margin-bottom: 25px;
+            border: 1px solid var(--border-color);
+            background: rgba(255, 255, 255, 0.03);
+            color: #fff;
             font-family: 'Inter', sans-serif;
-            background: #fff;
             border-radius: 0;
+            transition: border-color 0.3s;
+        }
+
+        .editor-input:focus,
+        .editor-select:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            background: rgba(255, 255, 255, 0.05);
         }
 
         .editor-select {
             appearance: none;
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
             background-repeat: no-repeat;
-            background-position: right 15px center;
+            background-position: right 20px center;
             background-size: 16px;
-            padding-right: 45px;
-            cursor: pointer;
         }
 
         .editor-textarea {
             min-height: 300px;
             resize: vertical;
+            line-height: 1.6;
         }
 
         .editor-label {
             display: block;
-            font-size: 0.8rem;
-            color: #666;
-            margin-bottom: 5px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
             text-transform: uppercase;
             letter-spacing: 1px;
         }
@@ -488,42 +581,16 @@
         }
 
         .code-output {
-            background: #f4f4f4;
-            padding: 20px;
-            border: 1px solid #ddd;
-            font-family: monospace;
-            font-size: 0.85rem;
+            background: #111;
+            padding: 25px;
+            border: 1px solid var(--border-color);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--accent-color);
             white-space: pre-wrap;
             word-break: break-all;
-            margin-top: 20px;
+            margin-top: 30px;
             display: none;
-        }
-
-        /* --- About --- */
-        .about-grid {
-            display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 60px;
-            align-items: start;
-        }
-
-        .about-intro p {
-            margin-bottom: 20px;
-            color: #333;
-            font-size: 1.05rem;
-        }
-
-        .sidebar-section {
-            margin-bottom: 40px;
-        }
-
-        .section-label {
-            font-family: 'Playfair Display', serif;
-            margin-bottom: 15px;
-            font-size: 1.2rem;
-            border-bottom: 2px solid #000;
-            padding-bottom: 10px;
-            color: #000;
         }
 
         .resume-btn {
@@ -531,91 +598,120 @@
             text-align: center;
             width: 100%;
             margin-top: 20px;
-            padding: 14px 0;
-            background-color: #000;
-            color: #fff;
+            padding: 16px 0;
+            background-color: #fff;
+            color: #000;
+            border: 1px solid #fff;
             text-decoration: none;
-            font-size: 0.85rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 2px;
             font-weight: 600;
             transition: all 0.3s ease;
-            border: 1px solid #000;
+            cursor: pointer;
         }
 
         .resume-btn:hover {
-            background-color: #fff;
-            color: #000;
+            background-color: transparent;
+            color: #fff;
         }
 
-        .social-links {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
+        /* --- About --- */
+        .about-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 80px;
+            align-items: start;
+        }
+
+        .about-intro p {
+            margin-bottom: 25px;
+            color: var(--text-primary);
+            font-size: 1.1rem;
+            font-weight: 300;
+        }
+
+        .about-intro p:first-of-type {
+            font-size: 1.5rem;
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            color: #fff;
+            margin-bottom: 40px;
+        }
+
+        .section-label {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            margin-bottom: 20px;
+            font-size: 1.4rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+            color: #fff;
         }
 
         .social-link {
             color: var(--text-secondary);
             text-decoration: none;
-            font-size: 0.9rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
             transition: all 0.3s;
             display: flex;
             justify-content: space-between;
-            border-bottom: 1px solid #eee;
-            padding-bottom: 5px;
+            border-bottom: 1px solid var(--border-color);
+            padding: 12px 0;
         }
 
         .social-link:hover {
-            color: #000;
-            border-bottom-color: #000;
-            padding-left: 5px;
-        }
-
-        .tech-stack {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
+            color: var(--accent-color);
+            border-bottom-color: var(--accent-color);
+            padding-left: 10px;
         }
 
         .tech-tag {
-            font-size: 0.75rem;
-            padding: 4px 10px;
-            border: 1px solid #ccc;
-            color: #555;
-            border-radius: 0;
+            display: inline-block;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            padding: 6px 12px;
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            margin: 0 4px 8px 0;
             transition: all 0.3s;
         }
 
         .tech-tag:hover {
-            border-color: #000;
-            color: #000;
-            background: #f5f5f5;
+            border-color: var(--accent-color);
+            color: var(--accent-color);
+            background: rgba(251, 146, 60, 0.05);
         }
 
         footer {
-            margin-top: 100px;
+            margin-top: 120px;
             padding-top: 40px;
             border-top: 1px solid var(--border-color);
             display: flex;
             justify-content: space-between;
-            font-size: 0.8rem;
-            color: #888;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         .menu-toggle {
             display: none;
             cursor: pointer;
-            font-size: 1.5rem;
+            color: #fff;
         }
 
         @media (max-width: 768px) {
             h1 {
-                font-size: 3rem;
+                font-size: 3.5rem;
             }
 
             .about-grid {
                 grid-template-columns: 1fr;
-                gap: 40px;
+                gap: 50px;
             }
 
             .nav-links {
@@ -624,10 +720,10 @@
                 left: 0;
                 width: 100%;
                 flex-direction: column;
-                background: #fff;
-                padding: 20px;
-                border-bottom: 1px solid #eee;
-                gap: 20px;
+                background: #0e0e0e;
+                padding: 30px;
+                border-bottom: 1px solid var(--border-color);
+                gap: 25px;
                 text-align: center;
                 display: none;
             }
@@ -640,12 +736,9 @@
                 display: block;
             }
 
-            .gallery-track {
-                gap: 30px;
-            }
-
-            .gallery-card {
-                width: 280px;
+            .article-item {
+                grid-template-columns: 1fr;
+                gap: 10px;
             }
         }
     </style>
@@ -653,11 +746,14 @@
 
 <body>
 
+    <!-- Ambient Elements -->
+    <div class="noise-overlay"></div>
+    <div class="ambient-orb"></div>
     <div id="progress-bar"></div>
 
     <nav>
         <div class="nav-logo" onclick="window.app.router('home')">maffinnn</div>
-        <div class="menu-toggle" onclick="window.app.toggleMenu()">?</div>
+        <div class="menu-toggle" onclick="window.app.toggleMenu()"><i data-lucide="menu"></i></div>
         <div class="nav-links" id="nav-links">
             <a class="nav-link active" onclick="window.app.router('home')">Essays & Notes</a>
             <a class="nav-link" onclick="window.app.router('gallery')">Gallery</a>
@@ -670,18 +766,21 @@
         <div id="page-home" class="page-section active">
             <header>
                 <h1>Code &<br><i>Canvas.</i></h1>
-                <div class="subtitle">maffinnn / Builder and Artist</div>
+                <div class="subtitle">Build, think, express and create</div>
             </header>
             <div class="section-header">
                 <h2 class="section-title">Selected Writing</h2>
-                <span style="font-size: 0.8rem; color: #666; letter-spacing: 1px;">ESSAYS & NOTES</span>
+                <span
+                    style="font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; color: var(--text-muted); letter-spacing: 2px;">INDEX</span>
             </div>
             <div class="article-list" id="article-list-container"></div>
         </div>
 
-        <!-- === POST DETAIL (With Giscus) === -->
+        <!-- === POST DETAIL === -->
         <div id="page-post" class="page-section">
-            <div class="back-btn" onclick="window.app.router('home')">¡û Back to Index</div>
+            <div class="back-btn" onclick="window.app.router('home')">
+                <i data-lucide="arrow-left" size="14"></i> Back to Index
+            </div>
             <div id="post-content-wrapper"></div>
 
             <!-- Giscus Comments Container -->
@@ -690,15 +789,18 @@
 
         <!-- === WRITE / GEN CODE === -->
         <div id="page-write" class="page-section">
-            <div class="back-btn" onclick="window.app.router('home')">¡û Cancel</div>
+            <div class="back-btn" onclick="window.app.router('home')">
+                <i data-lucide="x" size="14"></i> Cancel
+            </div>
             <header>
                 <h1>New<br><i>Entry.</i></h1>
             </header>
             <div class="editor-container">
-                <p style="margin-bottom:20px; color:#666; font-size:0.9rem;">
+                <p
+                    style="margin-bottom:30px; color:var(--text-secondary); font-size:0.9rem; font-family: 'Inter', sans-serif;">
                     Use this tool to generate the code for a new post. Copy the result and paste it into the
-                    <strong>BLOG_DATA</strong> or <strong>GALLERY_DATA</strong> array in your <code>index.html</code>
-                    file.
+                    <strong style="color: #fff">BLOG_DATA</strong> or <strong style="color: #fff">GALLERY_DATA</strong>
+                    array in your <code>index.html</code> file.
                 </p>
                 <label class="editor-label">Content Type</label>
                 <select id="write-type" class="editor-select" onchange="window.app.toggleEditorFields()">
@@ -707,26 +809,25 @@
                 </select>
 
                 <label class="editor-label">Title</label>
-                <input type="text" id="write-title" class="editor-input" placeholder="Title">
+                <input type="text" id="write-title" class="editor-input" placeholder="The Title">
 
                 <div id="field-summary">
                     <label class="editor-label">Summary</label>
-                    <input type="text" id="write-summary" class="editor-input" placeholder="A brief subtitle">
+                    <input type="text" id="write-summary" class="editor-input" placeholder="A brief abstract...">
                 </div>
 
                 <div id="field-art" class="hidden">
                     <label class="editor-label">Medium</label>
                     <input type="text" id="write-medium" class="editor-input" placeholder="e.g., Charcoal, Digital">
                     <label class="editor-label">Image URL</label>
-                    <input type="text" id="write-image-url" class="editor-input"
-                        placeholder="https://your-image-host.com/art.jpg">
+                    <input type="text" id="write-image-url" class="editor-input" placeholder="https://...">
                 </div>
 
-                <label class="editor-label">Content / Description (HTML Allowed)</label>
+                <label class="editor-label">Content / Description</label>
                 <textarea id="write-content" class="editor-input editor-textarea"
-                    placeholder="Write here..."></textarea>
+                    placeholder="Write here... HTML allowed."></textarea>
 
-                <button class="resume-btn" onclick="window.app.generateCode()">Generate Code</button>
+                <button class="resume-btn" onclick="window.app.generateCode()">Generate JSON</button>
 
                 <div id="code-output" class="code-output"></div>
             </div>
@@ -735,24 +836,21 @@
         <!-- === ABOUT === -->
         <div id="page-about" class="page-section">
             <header>
-                <h1>maffinnn.</h1>
+                <h1>Hi, this is maffinnn</h1>
             </header>
             <div class="about-grid">
                 <div class="about-main">
                     <div class="about-intro">
-                        <p style="font-size: 1.2rem; font-weight: 600; margin-bottom: 30px; line-height: 1.5;">"Code
-                            builds the structure; Art gives it soul. I am dedicated to crafting both with precision and
-                            heart."</p>
-                        <p>I am a Full-Stack Software Engineer and an artist at heart. My journey has always been driven
-                            by a dual passion: the rigorous logic required to build scalable systems, and the intuitive
-                            freedom found in visual expression.</p>
-                        <p>Professionally, I thrive on solving complex problems. I am currently building core
-                            infrastructure at a <strong>Tech Company</strong>. My path has also led me through
-                            high-velocity environments at other <strong>Tech Companies</strong>, where I learned the art
-                            of cloud engineering and distributed systems.</p>
-                        <p>Beyond the terminal, I find my balance in creativity. Whether it's <strong>traditional
-                                sketching</strong> on paper or exploring <strong>modern digital arts</strong>, drawing
-                            allows me to see the world through a different lens.</p>
+                        <p>"Code shapes the world; art teaches me how to see it."</p>
+                        <p>I¡¯m a Full-Stack Software Engineer who moves between two modes of creation. In one, I¡¯m
+                            building systems that hold their shape under pressure; in the other, I¡¯m following lines and
+                            shadows to understand how ideas take form.</p>
+                        <p>My work has drawn me toward problems that require patience and precision. I now build core
+                            product at a tech company, shaped by time in fast-moving teams where I learned what it means
+                            to design systems that stay efficient even as they grow.</p>
+                        <p>Beyond the screen, drawing is where I return to quiet. Whether with a pencil or a stylus,
+                            it¡¯s the place where I slow down, pay attention, and let the world reveal itself a little at
+                            a time.</p>
                     </div>
                 </div>
                 <div class="about-sidebar">
@@ -763,18 +861,28 @@
                             <span class="tech-tag">React</span>
                             <span class="tech-tag">AWS</span>
                             <span class="tech-tag">Kubernetes</span>
+                            <span class="tech-tag">AB Testing</span>
+                            <span class="tech-tag">Typescript</span>
+                            <span class="tech-tag">Python</span>
+                            <span class="tech-tag">SQL</span>
+                            <span class="tech-tag">Git</span>
+                            <span class="tech-tag">Docker</span>
+                            <span class="tech-tag">CI/CD</span>
+                            <span class="tech-tag">DevOps</span>
                         </div>
                     </div>
                     <div class="sidebar-section">
                         <div class="section-label">Connect</div>
                         <div class="social-links">
-                            <a href="mailto:biansiyuanlynn@gmail.com" class="social-link">Email <span>¡ú</span></a>
-                            <a href="https://github.com/maffinnn" target="_blank" class="social-link">GitHub
-                                <span>¡ú</span></a>
+                            <a href="mailto:biansiyuanlynn@gmail.com" class="social-link">Email <i
+                                    data-lucide="arrow-up-right" size="16"></i></a>
+                            <a href="https://x.com/Maffinnn_" target="_blank" class="social-link">X <i
+                                    data-lucide="arrow-up-right" size="16"></i></a>
+                            <a href="https://github.com/maffinnn" target="_blank" class="social-link">GitHub <i
+                                    data-lucide="arrow-up-right" size="16"></i></a>
                             <a href="https://www.linkedin.com/in/siyuan-bian-13ba6b134/" target="_blank"
-                                class="social-link">LinkedIn <span>¡ú</span></a>
+                                class="social-link">LinkedIn <i data-lucide="arrow-up-right" size="16"></i></a>
                         </div>
-                        <a href="./resume.pdf" class="resume-btn" target="_blank">Download Resume</a>
                     </div>
                 </div>
             </div>
@@ -788,7 +896,7 @@
 
     <!-- === GALLERY (Wide Layout) === -->
     <div id="page-gallery" class="page-section container-wide">
-        <div class="container">
+        <div class="container" style="padding-bottom: 0;">
             <header>
                 <h1>Visual<br><i>Experiments.</i></h1>
             </header>
@@ -798,14 +906,18 @@
         </div>
     </div>
 
-    <div class="write-fab" onclick="window.app.router('write')" title="New Entry">+</div>
+    <div class="write-fab" onclick="window.app.router('write')" title="New Entry">
+        <i data-lucide="plus"></i>
+    </div>
 
     <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
         // ==========================================================================
-        // ? DATA STORAGE (GitHub Mode - Manual Code Entry)
+        // ? DATA STORAGE
         // ==========================================================================
 
-        // 1. ESSAYS & NOTES DATA
         const BLOG_DATA = [
             {
                 id: 1,
@@ -827,38 +939,51 @@
                 title: "System Aesthetics",
                 summary: "Entropy and order in complex systems.",
                 content: `<p>There is a profound beauty in a well-designed distributed system. The way nodes communicate is a ballet of logic.</p>`
+            },
+            {
+                id: 4,
+                date: "AUG 10, 2023",
+                title: "The Architecture of Silence",
+                summary: "Why empty space is the most important design element in the modern era.",
+                content: `<p>In a world screaming for attention, silence is the ultimate luxury. Code can be silent too.</p>`
             }
         ];
 
-        // 2. GALLERY DATA
         const GALLERY_DATA = [
             {
                 id: "art-1",
                 title: "Structural Chaos",
                 medium: "Charcoal on Paper",
                 description: "A study of urban decay.",
-                imageUrl: "https://images.unsplash.com/photo-1515405295579-ba7f9f92f413?q=80&w=800&auto=format&fit=crop" // Placeholder
+                imageUrl: "https://images.unsplash.com/photo-1515405295579-ba7f9f92f413?q=80&w=800&auto=format&fit=crop"
             },
             {
                 id: "art-2",
                 title: "Neural Dreams",
                 medium: "Generative Art",
                 description: "Algorithmic patterns generated with p5.js",
-                imageUrl: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=800&auto=format&fit=crop" // Placeholder
+                imageUrl: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=800&auto=format&fit=crop"
             },
             {
                 id: "art-3",
                 title: "Silence",
                 medium: "Ink",
                 description: "Minimalist ink wash painting.",
-                imageUrl: "https://images.unsplash.com/photo-1580136608260-4eb11f4b64fe?q=80&w=800&auto=format&fit=crop" // Placeholder
+                imageUrl: "https://images.unsplash.com/photo-1580136608260-4eb11f4b64fe?q=80&w=800&auto=format&fit=crop"
             },
             {
                 id: "art-4",
                 title: "Recursion",
                 medium: "3D Render",
                 description: "Blender fractal loops.",
-                imageUrl: "https://images.unsplash.com/photo-1614730341194-75c60740658f?q=80&w=800&auto=format&fit=crop" // Placeholder
+                imageUrl: "https://images.unsplash.com/photo-1614730341194-75c60740658f?q=80&w=800&auto=format&fit=crop"
+            },
+            {
+                id: "art-5",
+                title: "Digital Clay",
+                medium: "Digital",
+                description: "Exploring the tactile nature of 3D web elements.",
+                imageUrl: "https://images.unsplash.com/photo-1516546453855-7f37b5223d44?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
             }
         ];
 
@@ -868,6 +993,7 @@
                 this.renderHome();
                 this.renderGallery();
                 this.initGiscus(); // Load comments
+                lucide.createIcons();
             },
 
             router: function (pageId) {
@@ -889,6 +1015,7 @@
 
                 document.getElementById('nav-links').classList.remove('mobile-open');
                 window.scrollTo(0, 0);
+                lucide.createIcons();
             },
 
             toggleMenu: function () { document.getElementById('nav-links').classList.toggle('mobile-open'); },
@@ -943,23 +1070,25 @@
             openPost: function (id, title, contentEncoded, date) {
                 const content = decodeURIComponent(contentEncoded);
                 document.getElementById('post-content-wrapper').innerHTML = `
-                    <div class="post-header"><span class="post-meta">${date} ? Note</span><h1 class="post-title">${title}</h1></div>
+                    <div class="post-header"><span class="post-meta">${date} // Note</span><h1 class="post-title">${title}</h1></div>
                     <div class="post-body">${content}</div>`;
                 window.app.router('post');
                 this.reloadGiscus(id);
+                lucide.createIcons();
             },
 
             openArt: function (id, title, medium, descEncoded, urlEncoded) {
                 const desc = decodeURIComponent(descEncoded);
                 const url = decodeURIComponent(urlEncoded);
                 document.getElementById('post-content-wrapper').innerHTML = `
-                    <div class="post-header"><span class="post-meta">${medium} ? Gallery</span><h1 class="post-title">${title}</h1></div>
+                    <div class="post-header"><span class="post-meta">${medium} // Gallery</span><h1 class="post-title">${title}</h1></div>
                     <div class="post-body" style="text-align:center;">
-                        <img src="${url}" style="max-width:100%; margin-bottom:30px; border:1px solid #eee;">
+                        <img src="${url}" style="max-width:100%; margin-bottom:30px; border:1px solid var(--border-color);">
                         <p>${desc}</p>
                     </div>`;
                 window.app.router('post');
                 this.reloadGiscus(id);
+                lucide.createIcons();
             },
 
             renderHome: function () {
@@ -991,19 +1120,18 @@
             initGiscus: function () {
                 const script = document.createElement('script');
                 script.src = "https://giscus.app/client.js";
-                // ??? IMPORTANT: YOU MUST UPDATE THIS ???
-                // Go to giscus.app, generate your config, and replace these values
+                // IMPORTANT: Replace these with your own repo details
                 script.setAttribute("data-repo", "maffinnn/maffinnn.github.io");
-                script.setAttribute("data-repo-id", "R_kgDOMl..."); // REPLACE THIS
+                script.setAttribute("data-repo-id", "R_kgDOMl...");
                 script.setAttribute("data-category", "Announcements");
-                script.setAttribute("data-category-id", "DIC_kwDOMl..."); // REPLACE THIS
+                script.setAttribute("data-category-id", "DIC_kwDOMl...");
                 script.setAttribute("data-mapping", "specific");
-                script.setAttribute("data-term", "Welcome"); // Default term
+                script.setAttribute("data-term", "Welcome");
                 script.setAttribute("data-strict", "0");
                 script.setAttribute("data-reactions-enabled", "1");
                 script.setAttribute("data-emit-metadata", "0");
                 script.setAttribute("data-input-position", "bottom");
-                script.setAttribute("data-theme", "light");
+                script.setAttribute("data-theme", "dark"); // Changed to Dark
                 script.setAttribute("data-lang", "en");
                 script.setAttribute("crossorigin", "anonymous");
                 script.async = true;
@@ -1014,7 +1142,7 @@
                 const iframe = document.querySelector('iframe.giscus-frame');
                 if (!iframe) return;
                 iframe.contentWindow.postMessage({
-                    giscus: { setConfig: { term: term } }
+                    giscus: { setConfig: { term: term, theme: 'dark' } }
                 }, 'https://giscus.app');
             }
         };
